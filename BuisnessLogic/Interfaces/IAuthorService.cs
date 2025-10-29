@@ -1,12 +1,13 @@
-﻿using DatabaseLayer.Models;
+﻿using BuisnessLogic.DTOs;
+
 
 namespace BuisnessLogic.Interfaces
 {
     public interface IAuthorService
     {
-        Task<Author> GetAuthorByIdAsync(int id);
+        Task<AuthorDTO> GetAuthorByIdAsync(int id);
 
-        Task<List<Author>> GetAllAuthorsAsync();
+        Task<List<AuthorDTO>> GetAllAuthorsAsync();
 
         Task AddAuthorAsync(string name, DateOnly dateOfBirth);
 

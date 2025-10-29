@@ -1,13 +1,13 @@
 ﻿using DatabaseLayer.Interfaces;
-using DatabaseLayer.Models;
+using BuisnessLogic.DTOs;
 
 namespace BuisnessLogic.Interfaces
 {
     public interface IBookService
     {
-        Task<Book> GetBookByIdAsync(int id);
+        Task<BookDTO> GetBookByIdAsync(int id);
 
-        Task<List<Book>> GetAllBooksAsync();
+        Task<List<BookDTO>> GetAllBooksAsync();
 
         Task AddBookAsync(string title, DateOnly publishDate, int authorId);
 

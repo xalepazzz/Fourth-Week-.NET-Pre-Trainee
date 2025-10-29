@@ -1,4 +1,5 @@
 using BuisnessLogic.Interfaces;
+using BuisnessLogic.DTOs;
 using DatabaseLayer.Interfaces;
 using DatabaseLayer.Models;
 
@@ -6,20 +7,27 @@ namespace BuisnessLogic;
 
 public class BookService(IBookRepository repository) : IBookService
 {
-    public async Task<Book> GetBookByIdAsync(int id)
+    public async Task<BookDTO> GetBookByIdAsync(int id)
     {
         if (id == 0)
             throw new ArgumentException("ID книги должен быть указан");
 
-        var book = await repository.GetBookByIdAsync(id);
-        if (book == null)
+        var bookEntity = await repository.GetBookByIdAsync(id);
+        if (bookEntity == null)
             throw new ArgumentException($"Книга с ID {id} не найдена");
-        return book;
+        return new BookDTO { Id = bookEntity.Id, PublishDate = bookEntity.PublishDate, Title = bookEntity.Title, AuthorId = bookEntity.AuthorId };
     }
 
-    public async Task<List<Book>> GetAllBooksAsync()
+    public async Task<List<BookDTO>> GetAllBooksAsync()
     {
-        return await repository.GetAllBooksAsync();
+        var bookEntityes = await repository.GetAllBooksAsync();
+        return bookEntityes.Select(bookEntity => new BookDTO
+        {
+            Id = bookEntity.Id,
+            Title = bookEntity.Title,
+            PublishDate = bookEntity.PublishDate,
+            AuthorId = bookEntity.AuthorId
+        }).ToList();
     }
 
     public async Task AddBookAsync(string title, DateOnly publishDate, int authorId)
@@ -93,7 +101,7 @@ public class BookService(IBookRepository repository) : IBookService
         if (id == 0)
             throw new ArgumentException("ID книги должен быть указан");
 
-        var book = await GetBookByIdAsync(id);
+        var book = await repository.GetBookByIdAsync(id);
         if (book == null)
             throw new ArgumentException("Книги не существует");
         await repository.DeleteBookAsync(book);

@@ -1,4 +1,5 @@
 using BuisnessLogic.Interfaces;
+using BuisnessLogic.DTOs;
 using DatabaseLayer.Interfaces;
 using DatabaseLayer.Models;
 
@@ -6,20 +7,31 @@ namespace BuisnessLogic;
 
 public class AuthorService(IAuthorRepository repository) : IAuthorService
 {
-    public async Task<Author> GetAuthorByIdAsync(int id)
+    public async Task<AuthorDTO> GetAuthorByIdAsync(int id)
     {
         if (id == 0)
             throw new ArgumentException("ID автора не может быть пустым");
 
-        var author = await repository.GetAuthorByIdAsync(id);
-        if (author == null)
+        var authorEntity = await repository.GetAuthorByIdAsync(id);
+        if (authorEntity == null)
             throw new ArgumentException($"Автор с ID {id} не найден");
-        return author;
+        return new AuthorDTO
+        {
+            Id = authorEntity.Id,
+            Name = authorEntity.Name,
+            DateOfBirth = authorEntity.DateOfBirth,
+        };
     }
 
-    public async Task<List<Author>> GetAllAuthorsAsync()
+    public async Task<List<AuthorDTO>> GetAllAuthorsAsync()
     {
-        return await repository.GetAllAuthorsAsync();
+        var authorEntityes = await repository.GetAllAuthorsAsync();
+        return authorEntityes.Select(authorEntity => new AuthorDTO
+        {
+            Id = authorEntity.Id,
+            Name = authorEntity.Name,
+            DateOfBirth = authorEntity.DateOfBirth,
+        }).ToList();
     }
 
     public async Task AddAuthorAsync(string name, DateOnly dateOfBirth)
@@ -84,7 +96,7 @@ public class AuthorService(IAuthorRepository repository) : IAuthorService
         if (id == 0)
             throw new ArgumentException("ID автора должен быть пустым");
 
-        var author = await GetAuthorByIdAsync(id);
+        var author = await repository.GetAuthorByIdAsync(id);
         if (author == null)
             throw new ArgumentException("Автора не существует");
         await repository.DeleteAuthorAsync(author);

@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace BuisnessLogic.DTOs
 {
-    internal class BookDTO
+    public class BookDTO
     {
         public int Id { get; set; }
         public string Title { get; set; }
         public DateOnly PublishDate { get; set; }
+        public int AuthorId { get; set; }
     }
 }
