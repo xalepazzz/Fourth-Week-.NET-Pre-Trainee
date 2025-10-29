@@ -4,6 +4,7 @@ using BuisnessLogic;
 using System.Text.Json.Serialization;
 using thirdweek;
 using DatabaseLayer.Interfaces;
+using fourthWeek.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -16,6 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
+app.UseExceptionsHandler();
 app.UseRouting();
 app.MapControllers();
 app.UseSwagger();

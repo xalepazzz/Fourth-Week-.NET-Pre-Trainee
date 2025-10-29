@@ -14,10 +14,10 @@ namespace DatabaseLayer
             DbContext = dbContext;
         }
         
-        public async Task<Author> GetAuthorByIdAsync(int id) 
+        public async Task<Author?> GetAuthorByIdAsync(int id) 
         {
 
-            return await DbContext.Authors.FirstAsync(i => i.Id == id );
+            return await DbContext.Authors.Include(a => a.Books ).FirstOrDefaultAsync(i => i.Id == id );
         }
         public async Task<List<Author>> GetAllAuthorsAsync() 
         { 

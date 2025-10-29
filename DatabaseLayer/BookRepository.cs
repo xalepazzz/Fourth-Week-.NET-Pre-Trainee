@@ -7,9 +7,9 @@ namespace DatabaseLayer
     public class BookRepository(AppDBContext dbContext) : IBookRepository
     {
 
-        public async Task<Book> GetBookByIdAsync(int id)
+        public async Task<Book?> GetBookByIdAsync(int id)
         {
-            return await dbContext.Books.FirstAsync(x => x.Id == id);
+            return await dbContext.Books.FirstOrDefaultAsync(x => x.Id == id);
         }
         public async Task<List<Book>> GetAllBooksAsync()
         {

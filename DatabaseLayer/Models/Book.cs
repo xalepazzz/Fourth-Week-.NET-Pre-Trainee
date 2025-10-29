@@ -6,7 +6,7 @@
         public string Title { get; set; }
         public DateOnly PublishDate  { get; set; }
         public Author Author { get; set; }
-        public int AuthorId {  get; set; }
+        public int AuthorId {  get; set; } 
         
 
     }

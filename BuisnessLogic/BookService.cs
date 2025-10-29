@@ -33,7 +33,7 @@ public class BookService(IBookRepository repository) : IBookService
         if (publishDate > DateOnly.FromDateTime(DateTime.Now))
             throw new ArgumentException("Дата публикации не может быть в будущем");
 
-        if (authorId == 0)
+        if (authorId == null || authorId == 0)
             throw new ArgumentException("ID автора должен быть указан");
 
         var book = new Book { Title = title.Trim(), AuthorId = authorId, PublishDate = publishDate };
@@ -46,7 +46,9 @@ public class BookService(IBookRepository repository) : IBookService
             throw new ArgumentException("ID книги должен быть указан");
 
         var existingBook = await GetBookByIdAsync(id);
-        
+        if (existingBook == null)
+            throw new ArgumentException($"Книга с ID {id} не найдена");
+
         string updatedTitle = existingBook.Title;
         DateOnly updatedPublishDate = existingBook.PublishDate;
         int updatedAuthorId = existingBook.AuthorId;
