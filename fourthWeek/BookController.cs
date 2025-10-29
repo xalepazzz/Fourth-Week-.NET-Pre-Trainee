@@ -1,7 +1,6 @@
-﻿using BuisnessLogic;
+﻿using BuisnessLogic.Interfaces;
+using BuisnessLogic.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using DatabaseLayer.Models;
-using DatabaseLayer;
 
 namespace thirdweek
 {
@@ -9,21 +8,20 @@ namespace thirdweek
     [Route("api/[controller]")]
     public class BookController : ControllerBase
     {
-        BookService _bookService;
-        AuthorService _authorService;
-        public BookController(BookService bookService, AuthorService authorService) { _bookService = bookService; _authorService = authorService; }
+        IBookService _bookService;
+        public BookController(IBookService bookService) { _bookService = bookService;}
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBookById(int id)
         {
-                Book book = await _bookService.GetBookByIdAsync(id);
+            BookDTO book = await _bookService.GetBookByIdAsync(id);
                 return Ok(book);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllBooks()
         {
-                List<Book> books = await _bookService.GetAllBooksAsync();
+                List<BookDTO> books = await _bookService.GetAllBooksAsync();
                 return Ok(books);
         }
 
@@ -47,5 +45,6 @@ namespace thirdweek
                 await _bookService.DeleteBookAsync(id);
                 return Ok("Книга успешно удалена");
         }
+
     }
 }

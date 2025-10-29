@@ -1,8 +1,6 @@
-using Swashbuckle.AspNetCore;
 using DatabaseLayer;
 using BuisnessLogic;
-using System.Text.Json.Serialization;
-using thirdweek;
+using BuisnessLogic.Interfaces;
 using DatabaseLayer.Interfaces;
 using fourthWeek.Middleware;
 
@@ -10,8 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
-builder.Services.AddScoped<AuthorService>();
-builder.Services.AddScoped<BookService>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<StatisticsService>();
 builder.Services.AddDataAcess();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

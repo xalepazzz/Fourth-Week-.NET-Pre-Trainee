@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using DatabaseLayer.Models;
-using BuisnessLogic;
+using BuisnessLogic.DTOs;
+using BuisnessLogic.Interfaces;
 
 namespace thirdweek
 {
@@ -8,10 +8,10 @@ namespace thirdweek
     [Route("api/[controller]")]
     public class AuthorController : ControllerBase
     {
-        private readonly AuthorService _authorService;
-        private readonly BookService _bookService;
+        private readonly IAuthorService _authorService;
+        private readonly IBookService _bookService;
         
-        public AuthorController(AuthorService authorService, BookService bookService) 
+        public AuthorController(IAuthorService authorService, IBookService bookService) 
         { 
             _authorService = authorService; 
             _bookService = bookService; 
@@ -20,14 +20,14 @@ namespace thirdweek
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAuthorById(int id)
         {
-                Author author = await _authorService.GetAuthorByIdAsync(id);
+                AuthorDTO author = await _authorService.GetAuthorByIdAsync(id);
                 return Ok(author);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllAuthors()
         {  
-                List<Author> authors = await _authorService.GetAllAuthorsAsync();
+                List<AuthorDTO> authors = await _authorService.GetAllAuthorsAsync();
                 return Ok(authors);
         }
 

@@ -2,6 +2,7 @@ using BuisnessLogic.Interfaces;
 using BuisnessLogic.DTOs;
 using DatabaseLayer.Interfaces;
 using DatabaseLayer.Models;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace BuisnessLogic;
 
@@ -101,4 +102,5 @@ public class AuthorService(IAuthorRepository repository) : IAuthorService
             throw new ArgumentException("Автора не существует");
         await repository.DeleteAuthorAsync(author);
     }
+
 }
